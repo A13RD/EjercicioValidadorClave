@@ -31,3 +31,13 @@ class ReglaValidacion(ABC):
     @abstractmethod
     def es_valida(self, clave: str) -> bool:
         pass
+
+
+class ReglaValidadorCalisto(ReglaValidacion):
+
+    def contiene_calisto(self):
+        pass
+
+    def es_valida(self, clave: str) -> bool:
+        pass
+

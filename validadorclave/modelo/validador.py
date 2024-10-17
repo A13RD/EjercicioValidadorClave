@@ -6,23 +6,35 @@ from validadorclave.modelo.errores import *
 
 class ReglaValidacion(ABC):
 
-    def __init__(self, _longitud_esperada: int):
-        self._longitud_esperada = _longitud_esperada
+    def __init__(self, longitud_esperada: int):
+        self._longitud_esperada: int = longitud_esperada
 
     def _validar_longitud(self, clave: str) -> bool:
-        return len(clave) > self._longitud_esperada
+        if len(clave) > self._longitud_esperada:
+            return True
+        else:
+            return False
 
     @staticmethod
     def _contiene_mayuscula(self, clave: str) -> bool:
-        return any(letra.isupper() for letra in clave)
+        for caracter in clave:
+            if caracter.isupper():
+                return True
+        return False
 
     @staticmethod
     def _contiene_minuscula(self, clave: str) -> bool:
-        return any(letra.islower() for letra in clave)
+        for caracter in clave:
+            if caracter.islower():
+                return True
+        return False
 
     @staticmethod
     def _contiene_numero(self, clave: str) -> bool:
-        return any(letra.isdigit() for letra in clave)
+        for caracter in clave:
+            if caracter.isdigit():
+                return True
+        return False
 
     @abstractmethod
     def es_valida(self, clave: str) -> bool:
@@ -31,7 +43,11 @@ class ReglaValidacion(ABC):
 
 class ReglaValidacionCalisto(ReglaValidacion):
 
-    def contiene_calisto(self):
+    def __init__(self):
+        super().__init__(6)
+
+    @staticmethod
+    def contiene_calisto(clave: str) -> bool:
         pass
 
     def es_valida(self, clave: str) -> bool:
@@ -46,9 +62,17 @@ class ReglaValidacionCalisto(ReglaValidacion):
 
 class ReglaValidacionGanimedes(ReglaValidacion):
 
+    def __init__(self):
+        super().__init__(8)
+
+    @staticmethod
     def contiene_caracter_especial(self, clave: str) -> bool:
-        caracter_especial = "@_#$%"
-        return any(letra in caracter_especial for letra in clave)
+        for caracter in clave:
+            if caracter in ["@", "_", "#", "$", "%"]:
+                return True
+            else:
+                pass
+        return False
 
     def es_valida(self, clave: str) -> bool:
         if not self._validar_longitud(clave):
@@ -71,5 +95,11 @@ class ReglaValidacionGanimedes(ReglaValidacion):
 
 class Validador:
 
+    def __init__(self, regla: ReglaValidacion):
+        self.regla = regla
+
     def es_valida(self, clave: str) -> bool:
-        pass
+        if self.regla.es_valida(clave):
+            return True
+        else:
+            return False

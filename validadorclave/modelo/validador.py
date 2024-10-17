@@ -10,27 +10,24 @@ class ReglaValidacion(ABC):
         self._longitud_esperada: int = longitud_esperada
 
     def _validar_longitud(self, clave: str) -> bool:
-        if len(clave) > self._longitud_esperada:
-            return True
-        else:
-            return False
+        return len(clave) > self._longitud_esperada
 
     @staticmethod
-    def _contiene_mayuscula(self, clave: str) -> bool:
+    def _contiene_mayuscula(clave: str) -> bool:
         for caracter in clave:
             if caracter.isupper():
                 return True
         return False
 
     @staticmethod
-    def _contiene_minuscula(self, clave: str) -> bool:
+    def _contiene_minuscula(clave: str) -> bool:
         for caracter in clave:
             if caracter.islower():
                 return True
         return False
 
     @staticmethod
-    def _contiene_numero(self, clave: str) -> bool:
+    def _contiene_numero(clave: str) -> bool:
         for caracter in clave:
             if caracter.isdigit():
                 return True
@@ -48,7 +45,8 @@ class ReglaValidacionCalisto(ReglaValidacion):
 
     @staticmethod
     def contiene_calisto(clave: str) -> bool:
-        pass
+        mayusculas = sum(1 for caracter in clave if caracter.lower() in "calisto" and caracter.isupper())
+        return "calisto" in clave.lower() and 2 <= mayusculas < 7
 
     def es_valida(self, clave: str) -> bool:
         if not self._validar_longitud(clave):
@@ -65,13 +63,10 @@ class ReglaValidacionGanimedes(ReglaValidacion):
     def __init__(self):
         super().__init__(8)
 
-    @staticmethod
     def contiene_caracter_especial(self, clave: str) -> bool:
         for caracter in clave:
             if caracter in ["@", "_", "#", "$", "%"]:
                 return True
-            else:
-                pass
         return False
 
     def es_valida(self, clave: str) -> bool:
